@@ -1,3 +1,6 @@
+# Ejs
+*.ejs
+
 # Logs
 logs
 *.log
