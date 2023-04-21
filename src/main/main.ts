@@ -48,7 +48,6 @@ const installExtensions = async () => {
   // const installer = require('electron-devtools-installer');
   // const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   // const extensions = ['REACT_DEVELOPER_TOOLS'];
-
   // return installer
   //   .default(
   //     extensions.map((name) => installer[name]),
@@ -79,6 +78,7 @@ const createWindow = async () => {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
+      webSecurity: false, // not suitable for production
     },
   });
 
@@ -136,3 +136,13 @@ app
     });
   })
   .catch(console.log);
+
+app.on(
+  'certificate-error',
+  (event, webContents, url, error, certificate, callback) => {
+    // Prevent having error
+    event.preventDefault();
+    // and continue
+    callback(true);
+  }
+);
